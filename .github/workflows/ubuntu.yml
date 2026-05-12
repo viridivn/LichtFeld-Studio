@@ -1,21 +1,10 @@
 name: Ubuntu CUDA Build
 
 on:
-  push:
-    branches: [ dev, master ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-  pull_request:
-    branches: [ dev, master ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
   workflow_dispatch:
 
 jobs:
   build-ubuntu:
-    if: github.repository == 'MrNeRF/LichtFeld-Studio' || github.event.pull_request.base.repo.full_name == 'MrNeRF/LichtFeld-Studio'
     runs-on: ubuntu-24.04
     container:
       image: nvidia/cuda:12.8.0-devel-ubuntu24.04
