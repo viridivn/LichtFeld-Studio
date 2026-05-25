@@ -92,7 +92,7 @@ namespace {
             auto [ptr, ec] = std::from_chars(token.data(), token.data() + token.size(), channel);
             if (ec != std::errc() || ptr != token.data() + token.size() || channel < 0 || channel > 255)
                 return std::nullopt;
-            
+
             values[i] = static_cast<float>(channel) / 255.0f;
             if (i < 2) {
                 inner.remove_prefix(comma_pos + 1);
