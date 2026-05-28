@@ -145,7 +145,6 @@ namespace lfs::vis {
             glm::vec3 node_bounds_cache_max_{0.0f};
 
             // Tool tracking
-            std::string previous_tool_id_;
             SelectionSubMode previous_selection_mode_ = SelectionSubMode::Centers;
             ToolStateStamp last_tool_state_stamp_;
 

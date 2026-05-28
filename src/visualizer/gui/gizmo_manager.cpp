@@ -539,13 +539,6 @@ namespace lfs::vis::gui {
             const bool is_align_mode = (active_tool_id == "builtin.align");
             const bool is_selection_mode = (active_tool_id == "builtin.select");
 
-            if (previous_tool_id_ == "builtin.select" && active_tool_id != previous_tool_id_) {
-                if (auto* const sm = ctx.viewer->getSceneManager()) {
-                    sm->applyDeleted();
-                }
-            }
-            previous_tool_id_ = active_tool_id;
-
             if (brush_tool)
                 brush_tool->setEnabled(is_brush_mode);
             if (align_tool)
@@ -1845,10 +1838,6 @@ namespace lfs::vis::gui {
             t->setEnabled(false);
         if (auto* const t = viewer_->getAlignTool())
             t->setEnabled(false);
-
-        if (auto* const sm = viewer_->getSceneManager()) {
-            sm->applyDeleted();
-        }
 
         auto& editor = viewer_->getEditorContext();
         editor.setActiveTool(ToolType::None);
