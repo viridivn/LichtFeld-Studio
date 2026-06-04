@@ -769,6 +769,7 @@ def test_viewport_toolbar_update_syncs_utility_records(toolbar_module, monkeypat
     panel_enabled = {
         "lfs.asset_manager": True,
         "lfs.input_settings": True,
+        "lfs.plugin_marketplace": True,
     }
 
     lf_stub.RenderMode = SimpleNamespace(
@@ -795,6 +796,7 @@ def test_viewport_toolbar_update_syncs_utility_records(toolbar_module, monkeypat
         "tr",
         lambda key: {
             "toolbar.asset_manager": "Assets",
+            "menu.tools.plugin_marketplace": "Plugins",
             "window.input_settings": "Input",
         }.get(key, key),
         raising=False,
@@ -829,6 +831,7 @@ def test_viewport_toolbar_update_syncs_utility_records(toolbar_module, monkeypat
     assert [button["button_id"] for button in extra_buttons] == [
         "util-input-settings",
         "util-asset-manager",
+        "util-plugin-marketplace",
         "util-sequencer",
     ]
     input_settings = extra_buttons[0]
@@ -842,17 +845,22 @@ def test_viewport_toolbar_update_syncs_utility_records(toolbar_module, monkeypat
     assert extra_buttons[1]["icon_src"] == "../icon/archive.png"
     assert extra_buttons[1]["tooltip_text"] == "Assets"
     assert extra_buttons[1]["selected"] is True
+    assert extra_buttons[2]["action"] == "toggle_panel"
+    assert extra_buttons[2]["value"] == "lfs.plugin_marketplace"
+    assert extra_buttons[2]["icon_src"] == "../icon/puzzle.png"
+    assert extra_buttons[2]["tooltip_text"] == "Plugins"
+    assert extra_buttons[2]["selected"] is True
     assert render_group["action"] == "render_group"
     assert render_group["icon_src"] == "../icon/blob.png"
     assert render_group["selected"] is False
 
     model.handle.record_updates.clear()
-    model.bound_events["toolbar_action"](None, None, ["toggle_panel", "lfs.input_settings"])
+    model.bound_events["toolbar_action"](None, None, ["toggle_panel", "lfs.plugin_marketplace"])
 
-    assert panel_enabled["lfs.input_settings"] is False
+    assert panel_enabled["lfs.plugin_marketplace"] is False
     extra_buttons = model.handle.record_updates["utility_extra_buttons"]
-    assert extra_buttons[0]["button_id"] == "util-input-settings"
-    assert extra_buttons[0]["selected"] is False
+    assert extra_buttons[2]["button_id"] == "util-plugin-marketplace"
+    assert extra_buttons[2]["selected"] is False
 
 
 def test_toolbar_tool_action_refreshes_button_records_immediately(toolbar_module, monkeypatch):

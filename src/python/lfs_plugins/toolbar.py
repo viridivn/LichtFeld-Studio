@@ -689,6 +689,7 @@ class _GizmoToolbarController:
 class _UtilityToolbarController:
     _ASSET_MANAGER_PANEL_ID = "lfs.asset_manager"
     _INPUT_SETTINGS_PANEL_ID = "lfs.input_settings"
+    _PLUGIN_MARKETPLACE_PANEL_ID = "lfs.plugin_marketplace"
     _CAMERA_MODE_SPECS = (
         ("camera-orbit", "orbit", "Orbit Camera"),
         ("world", "trackball", "Free Orbit Camera"),
@@ -805,6 +806,15 @@ class _UtilityToolbarController:
                 tooltip_key="toolbar.asset_manager",
                 tooltip_text="Asset Manager",
                 selected=_panel_enabled(self._ASSET_MANAGER_PANEL_ID),
+            ),
+            _button_record(
+                "util-plugin-marketplace",
+                "toggle_panel",
+                self._PLUGIN_MARKETPLACE_PANEL_ID,
+                _icon_src("puzzle"),
+                tooltip_key="menu.tools.plugin_marketplace",
+                tooltip_text="Plugin Marketplace",
+                selected=_panel_enabled(self._PLUGIN_MARKETPLACE_PANEL_ID),
             )
         ]
         utility_bottom_buttons = []
@@ -1318,6 +1328,13 @@ class _ViewportToolbarController:
                 _UtilityToolbarController._INPUT_SETTINGS_PANEL_ID,
             )
         )
+        plugin_marketplace_enabled = bool(
+            call(
+                False,
+                getattr(lf.ui, "is_panel_enabled", None),
+                _UtilityToolbarController._PLUGIN_MARKETPLACE_PANEL_ID,
+            )
+        )
         return (
             trainer_state,
             self._utility.active_group,
@@ -1343,6 +1360,7 @@ class _ViewportToolbarController:
             bool(histogram_mode_available(ui_context)) if ui_context is not None else False,
             asset_manager_enabled,
             input_settings_enabled,
+            plugin_marketplace_enabled,
             bool(call(False, getattr(lf.ui, "is_panel_enabled", None), "lfs.histogram")),
         )
 
